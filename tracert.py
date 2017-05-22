@@ -1,6 +1,7 @@
 import socket
 import select
 import struct
+import sys
 
 MAX_ROUNDS = 50
 PORT = 33434 + MAX_ROUNDS - 1
@@ -68,8 +69,14 @@ def whois(request, server):
 
 
 if __name__ == "__main__":
-    address = socket.gethostbyname("8.8.8.8")
-    current_number = 0x00
+    if len(sys.argv) < 2:
+        print("Default address used(8.8.8.8)")
+        address = "8.8.8.8"
+    else:
+        address = sys.argv[1]
+
+    address = socket.gethostbyname(address)
+    current_number = 0
     for ip in trace_ip(address):
         print(str(current_number) + ") ", end="")
         if ip != "*":
